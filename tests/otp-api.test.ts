@@ -3,7 +3,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { MongoClient } from 'mongodb';
 import { buildApp } from '../src/app.js';
 
-const databaseName = `${process.env.MONGODB_DATABASE ?? 'rec_otp_pov_test'}_${randomUUID()}`;
+const databaseName = process.env.MONGODB_DATABASE ?? 'rec_otp_pov_test';
 const mongoUri = process.env.MONGODB_URI;
 
 describe('RecOTP API', () => {
@@ -27,12 +27,12 @@ describe('RecOTP API', () => {
 
     mongo = new MongoClient(mongoUri);
     await mongo.connect();
+    await mongo.db(databaseName).dropDatabase();
     app = await buildApp({ mongo, databaseName });
   });
 
   afterAll(async () => {
     await app?.close();
-    await mongo?.db(databaseName).dropDatabase();
     await mongo?.close();
   });
 
