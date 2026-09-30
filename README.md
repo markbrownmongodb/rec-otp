@@ -25,6 +25,20 @@ This first feature is a single-database MongoDB Atlas implementation of an email
    npm test
    ```
 
+4. Start the API:
+
+   ```bash
+   npm start
+   ```
+
+5. Run the default Atlas load demonstration in another terminal:
+
+   ```bash
+   npm run load-test
+   ```
+
+   Configure the demonstration with `LOAD_ITERATIONS`, `LOAD_CONCURRENCY`, and `LOAD_TENANT_ID`.
+
 ## API
 
 Create an email challenge:

@@ -5,8 +5,10 @@
   "description": "Recruiting One Time Password proof of value",
   "type": "module",
   "scripts": {
+    "start": "tsx src/main.ts",
     "test": "vitest run",
     "test:watch": "vitest",
+    "load-test": "tsx src/run-load-test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
