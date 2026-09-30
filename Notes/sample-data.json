@@ -1,0 +1,49 @@
+{
+
+  "_id": ObjectId("66df1a2b3c4d5e6f7a8b9c0d"),
+
+  "otpId": "a1b2c3d4-5e6f-4a7b-8c9d-0e1f2a3b4c5d",
+
+  "challengeId": "f9e8d7c6-b5a4-4321-9876-543210fedcba",
+
+  "source": "jane.doe@example.com",
+
+  "tenantId": "tenant_ukg_prod_01",
+
+  "productCode": "UKG_PRO",
+
+  "channel": "EMAIL",
+
+  "flowType": "LOGIN",
+
+  "otpCodeHash": "2b12$KIXQ7yZ3n9v1s8mR4pLq7eB0tYVvVh1c1Z5f8Wn6xJm2Qk9Lp3Ou.",
+
+  "status": "ACTIVE",
+
+  "expiresAt": ISODate("2026-09-11T10:15:00.000Z"),
+
+  "validatedAt": null,
+
+  "idempotencyKey": "tenant_ukg_prod_01:UKG_PRO:EMAIL:LOGIN:jane.doe@example.com",
+
+  "attemptCount": 0,
+
+  "maxAttemps": 5,
+
+  "lockoutUntil": null,
+
+  "isLocked": false,
+
+  "resendCount": 0,
+
+  "lastResendAt": null,
+
+  "ipAddress": "203.0.113.42",
+
+  "createdAt": ISODate("2026-09-11T10:05:00.000Z"),
+
+  "updatedAt": ISODate("2026-09-11T10:05:00.000Z"),
+
+  "correlationId": "c0rr3l4-a1b2-4c3d-8e9f-0123456789ab"
+
+}
