@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { MongoClient } from 'mongodb';
 import { afterAll, beforeAll } from 'vitest';
 import { createServer } from '../src/server.js';
-import { runLoadTest } from '../src/load-test.js';
+import { runLoadTest, type TrafficProfile } from '../src/load-test.js';
 
 describe('RecOTP load test', () => {
   const mongoUri = process.env.MONGODB_URI;
@@ -33,6 +33,7 @@ describe('RecOTP load test', () => {
       iterations: 2,
       concurrency: 1,
       tenantId: 'tenant_load_test',
+      profile: { name: 'sign-in-only', mix: { SIGN_IN: 1 } } satisfies TrafficProfile,
     });
 
     expect(result).toEqual(expect.objectContaining({
@@ -45,7 +46,28 @@ describe('RecOTP load test', () => {
         max: expect.any(Number),
       }),
       meetsTenSecondMaximum: true,
+      profile: 'sign-in-only',
+      reportType: 'demonstration',
+      operations: expect.objectContaining({
+        SIGN_IN: expect.objectContaining({ iterations: 2, successful: 2, failed: 0 }),
+      }),
     }));
     expect(result.latencyMs.p95).toBeLessThanOrEqual(10_000);
+  });
+
+  it('reports sustained benchmark metadata and operation-level metrics', async () => {
+    const result = await runLoadTest({
+      baseUrl,
+      iterations: 1,
+      concurrency: 1,
+      tenantId: 'tenant_load_test',
+      durationMs: 1,
+      targetThroughput: 1000,
+      profile: { name: 'application-only', mix: { APPLICATION_SUBMISSION: 1 } },
+    });
+
+    expect(result.reportType).toBe('sustained-benchmark');
+    expect(result.throughput).toBeGreaterThan(0);
+    expect(result.operations.APPLICATION_SUBMISSION.successful).toBe(1);
   });
 });

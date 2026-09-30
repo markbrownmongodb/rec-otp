@@ -26,6 +26,9 @@ Implemented behavior:
 - TTL, idempotency, and audit indexes
 - Runnable `npm start` entry point
 - Configurable Atlas load demonstration via `npm run load-test`
+- Named traffic profiles for balanced, sign-in, sign-up, application submission, and verification flows
+- Optional sustained duration and target throughput controls
+- Per-operation latency, success/failure, throughput, and demonstration-versus-benchmark reporting
 - p50, p95, maximum latency, success, failure, and ten-second acceptance metrics
 
 ## Verification
@@ -66,7 +69,7 @@ This is a small demonstration, not a capacity claim. Larger, sustained tests sho
 
 ## Next Feature
 
-Add sustained benchmark profiles and reporting for sign-in, sign-up, application submission, retry, resend, and verification traffic, then use those measurements for sizing and the single-database versus CQRS decision.
+Run the new sustained benchmark profiles for sign-in, sign-up, application submission, retry, resend, and verification traffic, then use those measurements for sizing and the single-database versus CQRS decision.
 
 The next TDD cycle should begin with failing tests for:
 
