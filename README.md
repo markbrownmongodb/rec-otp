@@ -37,7 +37,9 @@ The current POV is a single-database MongoDB Atlas implementation of an email OT
    npm run load-test
    ```
 
-   Configure the demonstration with `LOAD_ITERATIONS`, `LOAD_CONCURRENCY`, and `LOAD_TENANT_ID`.
+    Configure the run with `LOAD_ITERATIONS`, `LOAD_CONCURRENCY`, and `LOAD_TENANT_ID`. For a sustained benchmark, also set `LOAD_DURATION_MS` and/or `LOAD_TARGET_THROUGHPUT`.
+
+    Available profiles are `balanced`, `sign-in`, `sign-up`, `application-submission`, `retry`, `resend`, and `verification`; select one with `LOAD_PROFILE`. Runs with a duration or target throughput are labeled `sustained-benchmark`; the default fixed-iteration run is labeled `demonstration` and is not a capacity claim.
 
 ## API
 
