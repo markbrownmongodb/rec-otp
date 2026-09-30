@@ -2,10 +2,10 @@
 
 ## Session Handoff
 
-- Main is current through merged PR #2 (`243568d`).
-- The completed feature is the runnable server and Atlas-backed synthetic load test.
+- Main is current through merged PR #4 (`84531c1`).
+- The completed features are the runnable server, Atlas-backed synthetic load test, and sustained benchmark reporting.
 - Start the next session from a clean `main` branch.
-- Do not begin implementation until the next failing test suite has been reviewed and approved.
+- The next session should begin by reviewing and approving the failing tests for the next feature before implementation.
 
 ## Current Feature
 
@@ -26,7 +26,7 @@ Implemented behavior:
 - TTL, idempotency, and audit indexes
 - Runnable `npm start` entry point
 - Configurable Atlas load demonstration via `npm run load-test`
-- Named traffic profiles for balanced, sign-in, sign-up, application submission, and verification flows
+- Named traffic profiles for balanced, sign-in, sign-up, application submission, retry, resend, and verification flows
 - Optional sustained duration and target throughput controls
 - Per-operation latency, success/failure, throughput, and demonstration-versus-benchmark reporting
 - p50, p95, maximum latency, success, failure, and ten-second acceptance metrics
@@ -67,21 +67,41 @@ The default 100-iteration Atlas demonstration completed successfully:
 
 This is a small demonstration, not a capacity claim. Larger, sustained tests should be run with agreed Atlas sizing and traffic profiles before extrapolating to the notes' hourly estimates.
 
-## Next Feature
+The first sustained benchmark smoke run also completed successfully:
 
-Run the new sustained benchmark profiles for sign-in, sign-up, application submission, retry, resend, and verification traffic, then use those measurements for sizing and the single-database versus CQRS decision.
+- Balanced profile at a ten-operation-per-second target for approximately five seconds
+- 57 successful verifications
+- 0 failed operations
+- Actual throughput: approximately 9.59 operations/second
+- p50 latency: approximately 399 ms
+- p95 latency: approximately 764 ms
+- Maximum latency: approximately 858 ms
+- Ten-second maximum: met
 
-The next TDD cycle should begin with failing tests for:
+This run was intentionally conservative and validates the benchmark path only. It does not demonstrate the target average of approximately 111 OTP creations/second (400,000/hour).
 
-- Configurable traffic profiles and request mix
-- Sustained duration and target throughput
-- Per-operation latency and error reporting
+## Next Session
+
+Complete the benchmark and sizing work using agreed production-representative inputs, then use those measurements for the single-database versus CQRS decision.
+
+The next TDD cycle should begin with failing tests for the remaining benchmark behavior:
+
 - Persistence cleanup and retained test artifacts
-- A benchmark report that distinguishes demonstration results from capacity claims
+- Benchmark execution across all profiles with an explicit result artifact
+- Validation that benchmark results distinguish demonstrations from capacity claims
+
+After those tests pass:
+
+- Run sign-in, sign-up, application-submission, retry, resend, and verification profiles.
+- Compare sustained results with 400,000 writes/hour (approximately 111 writes/second) and the read target.
+- Measure database growth and cleanup behavior.
+- Produce Atlas sizing and cost guidance.
+- Decide whether CQRS/change streams are justified.
 
 Open inputs before interpreting results:
 
 - Agreed Atlas tier and deployment topology
-- Target duration and concurrency for each profile
 - Confirmed peak rates by flow and tenant
 - Whether benchmark records should remain in Atlas or be cleaned after inspection
+- Required benchmark duration and concurrency for each traffic profile
+- Whether retry and resend should model distinct API semantics rather than the current synthetic flow labels
