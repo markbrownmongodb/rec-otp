@@ -1,1 +1,48 @@
 # rec-otp
+
+Recruiting One Time Password proof of value for UKG.
+
+This first feature is a single-database MongoDB Atlas implementation of an email OTP API. CQRS and change streams are intentionally deferred until measured performance demonstrates a need for them.
+
+## Setup
+
+1. Add a MongoDB Atlas connection string to `.env`:
+
+   ```text
+   MONGODB_URI=mongodb+srv://...
+   MONGODB_DATABASE=rec_otp_pov_test
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Run the integration tests:
+
+   ```bash
+   npm test
+   ```
+
+## API
+
+Create an email challenge:
+
+```bash
+curl -X POST http://localhost:3000/v1/otp/challenges \
+  -H 'content-type: application/json' \
+  -d '{"tenantId":"tenant_demo","productCode":"UKG_PRO","channel":"EMAIL","flowType":"LOGIN","recipient":"jane.doe@example.com","idempotencyKey":"tenant_demo:login:jane.doe@example.com"}'
+```
+
+The demo delivery sink is available at `GET /demo/deliveries`. It exposes the generated code only for demonstration and testing; a production email provider must never expose it through an API.
+
+## Defaults
+
+- Six-digit numeric codes
+- Ten-minute expiration
+- Five verification attempts
+- Immediate deletion after successful verification
+- TTL cleanup for expired challenges
+
+See `PROJECT_STATUS.md` for scope, decisions, and the next feature handoff.
