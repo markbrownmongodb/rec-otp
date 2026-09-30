@@ -17,13 +17,13 @@ describe('RecOTP server', () => {
 
     mongo = new MongoClient(mongoUri);
     await mongo.connect();
+    await mongo.db(databaseName).dropDatabase();
     server = await createServer({ mongo, databaseName });
     address = await server.start();
   });
 
   afterAll(async () => {
     await server?.stop();
-    await mongo?.db(databaseName).dropDatabase();
     await mongo?.close();
   });
 

@@ -29,7 +29,7 @@ npm run typecheck
 npm run load-test
 ```
 
-The integration tests require `MONGODB_URI` and `MONGODB_DATABASE` in the local `.env` file. Each test run uses a unique database suffix and drops that database during teardown.
+The integration tests require `MONGODB_URI` and `MONGODB_DATABASE` in the local `.env` file. Each suite drops its named test database during setup, then leaves the database in place after teardown for inspection.
 
 ## Deliberate POV Limitations
 

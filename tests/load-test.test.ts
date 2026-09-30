@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-import { randomUUID } from 'node:crypto';
 import { MongoClient } from 'mongodb';
 import { afterAll, beforeAll } from 'vitest';
 import { createServer } from '../src/server.js';
@@ -7,7 +6,7 @@ import { runLoadTest } from '../src/load-test.js';
 
 describe('RecOTP load test', () => {
   const mongoUri = process.env.MONGODB_URI;
-  const databaseName = `${process.env.MONGODB_DATABASE ?? 'rec_otp_pov_test'}_load_${randomUUID()}`;
+  const databaseName = `${process.env.MONGODB_DATABASE ?? 'rec_otp_pov_test'}_load`;
   let mongo: MongoClient;
   let server: Awaited<ReturnType<typeof createServer>>;
   let baseUrl: string;
@@ -18,13 +17,13 @@ describe('RecOTP load test', () => {
     }
     mongo = new MongoClient(mongoUri);
     await mongo.connect();
+    await mongo.db(databaseName).dropDatabase();
     server = await createServer({ mongo, databaseName });
     baseUrl = await server.start();
   });
 
   afterAll(async () => {
     await server?.stop();
-    await mongo?.db(databaseName).dropDatabase();
     await mongo?.close();
   });
 

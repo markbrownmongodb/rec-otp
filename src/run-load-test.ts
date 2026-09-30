@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import { randomUUID } from 'node:crypto';
 import { MongoClient } from 'mongodb';
 import { createServer } from './server.js';
 import { runLoadTest } from './load-test.js';
@@ -10,8 +9,9 @@ if (!mongoUri || mongoUri === 'mongodb+srv://replace-me') {
 }
 
 const mongo = new MongoClient(mongoUri);
-const databaseName = `${process.env.MONGODB_DATABASE ?? 'rec_otp_pov_load'}_${randomUUID()}`;
+const databaseName = `${process.env.MONGODB_DATABASE ?? 'rec_otp_pov_load'}_load`;
 await mongo.connect();
+await mongo.db(databaseName).dropDatabase();
 const server = await createServer({ mongo, databaseName });
 const baseUrl = await server.start();
 
@@ -25,6 +25,5 @@ try {
   console.log(JSON.stringify(result, null, 2));
 } finally {
   await server.stop();
-  await mongo.db(databaseName).dropDatabase();
   await mongo.close();
 }
