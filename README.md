@@ -2,7 +2,7 @@
 
 Recruiting One Time Password proof of value for UKG.
 
-This first feature is a single-database MongoDB Atlas implementation of an email OTP API. CQRS and change streams are intentionally deferred until measured performance demonstrates a need for them.
+The current POV is a single-database MongoDB Atlas implementation of an email OTP API with a runnable server and synthetic load runner. CQRS and change streams are intentionally deferred until measured performance demonstrates a need for them.
 
 ## Setup
 
